@@ -90,17 +90,10 @@ var re = (function(str) {
         return new RegExp(str, 'g');
     })();
 
-// for compiled templates
-vibrissae.cache = {};
-
 // main function
 vibrissae.render = function(template, context) {
-    var cache = vibrissae.cache;
-    // compile if not cached
-    if (!cache[template])
-        cache[template] = vibrissae.compile(template);
-
-    return cache[template](context);
+    var compiled = vibrissae.compile(template);
+    return compiled(context);
 };
 
 // compile template to function
