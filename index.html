@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Vibrissae by decanat</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Vibrissae</h1>
+        <p>Templating library for JavaScript</p>
+
+        <p class="view"><a href="https://github.com/decanat/vibrissae">View the Project on GitHub <small>decanat/vibrissae</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/decanat/vibrissae/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/decanat/vibrissae/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/decanat/vibrissae">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="vibrissae" class="anchor" href="#vibrissae"><span class="octicon octicon-link"></span></a>Vibrissae</h1>
+
+<p>A templating library with Mustache-like syntax based on <a href="https://github.com/gsf/whiskers.js">Whiskers.</a>.</p>
+
+<h2>
+<a name="about-whiskers" class="anchor" href="#about-whiskers"><span class="octicon octicon-link"></span></a>About Whiskers</h2>
+
+<p>Whiskers is focused on template readability. By limiting template logic, 
+careful preparation of the context is encouraged, and the processing and 
+formatting of data is kept separate from the design of the display.</p>
+
+<p>At around 100 lines, Whiskers.js may be the smallest mustachioed templating 
+system. It also compiles and caches for quick execution. Take a look at the 
+well-documented <a href="https://github.com/gsf/whiskers.js/blob/master/lib/whiskers.js">code</a>!</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>For the browser, drop the minified version at <code>dist/whiskers.min.js</code> in your
+scripts directory (or source it directly from GitHub at 
+<a href="http://gsf.github.io/whiskers.js/whiskers.min.js">http://gsf.github.io/whiskers.js/whiskers.min.js</a>).</p>
+
+<p>For node, <code>npm install whiskers</code>.</p>
+
+<p>For use in <a href="http://expressjs.com/">Express</a>, see <a href="https://github.com/gsf/whiskers.js/tree/master/examples/express">examples/express</a>.</p>
+
+<h2>
+<a name="tests" class="anchor" href="#tests"><span class="octicon octicon-link"></span></a>Tests</h2>
+
+<p>For the browser, visit <code>test/browser/index.html</code>.</p>
+
+<p>For node, <code>npm test</code>.</p>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<p>Templates are rendered as follows, where "template" is a string and "context"
+is an object:</p>
+
+<pre><code>var rendered = whiskers.render(template, context);
+</code></pre>
+
+<p>A template might look something like this:</p>
+
+<pre><code>&lt;article&gt;
+  &lt;header&gt;
+    {&gt;header}
+  &lt;/header&gt;
+  {if tags}
+    &lt;ul id="tags"&gt;
+      {for tag in tags}
+      &lt;li&gt;{tag}&lt;/li&gt;
+      {/for}
+    &lt;/ul&gt;
+  {else}
+    &lt;p&gt;No tags!&lt;/p&gt;
+  {/if}
+  &lt;div&gt;{content}&lt;/div&gt;
+  {!&lt;p&gt;this paragraph is 
+    commented out&lt;/p&gt;!}
+&lt;/article&gt;
+</code></pre>
+
+<p>With the following context:</p>
+
+<pre><code>{
+  header: '&lt;h1&gt;{title}&lt;/h1&gt;\n&lt;p id="by"&gt;{author}&lt;/p&gt;',
+  title: 'My life',
+  author: 'Bars Thorman',
+  tags: [
+    'real',
+    'vivid'
+  ],
+  content: 'I grew up into a fine willow.'
+}
+</code></pre>
+
+<p>It would be rendered as this:</p>
+
+<pre><code>&lt;article&gt;
+  &lt;header&gt;
+    &lt;h1&gt;My life&lt;/h1&gt;
+    &lt;p id="by"&gt;Bars Thorman&lt;/p&gt;
+  &lt;/header&gt;
+  &lt;ul id="tags"&gt;
+    &lt;li&gt;real&lt;/li&gt;
+    &lt;li&gt;vivid&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;div&gt;I grew up into a fine willow.&lt;/div&gt;
+&lt;/article&gt;
+</code></pre>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Whiskers keeps templates readable by limiting tags to variables, statements 
+("for", "if", and "else"), partials, and comments.</p>
+
+<p>Variable tags retrieve data from the context.  They may use dot notation, and 
+hyphens are allowed:</p>
+
+<pre><code>{object.a-variable}
+</code></pre>
+
+<p>A "for" tag loops over variables in an array:</p>
+
+<pre><code>{for variable in array}
+  &lt;p&gt;{variable}&lt;/p&gt;
+{/for}
+</code></pre>
+
+<p>An "if" tag only displays a section of the template for a truthy variable, or
+the inverse:</p>
+
+<pre><code>{if variable}
+  &lt;p&gt;{variable}&lt;/p&gt;
+{/if}
+{if not variable}
+  &lt;p&gt;No variable!&lt;/p&gt;
+{/if}
+</code></pre>
+
+<p>As you can see, "for" and "if" sections are closed by a corresponding tag with
+a leading slash. The previous example could also be shortened:</p>
+
+<pre><code>{if variable}
+  &lt;p&gt;{variable}&lt;/p&gt;
+{else}
+  &lt;p&gt;No variable!&lt;/p&gt;
+{/if}
+</code></pre>
+
+<p>The "else" tag can also be used with "for" to display something when the array
+is empty:</p>
+
+<pre><code>{for variable in array}
+  &lt;p&gt;{variable}&lt;/p&gt;
+{else}
+  &lt;p&gt;Nothing in the array!&lt;/p&gt;
+{/for}
+</code></pre>
+
+<p>A partial tag begins with a greater-than sign.  It renders any template
+assigned to that variable with the current context:</p>
+
+<pre><code>&lt;div&gt;{&gt;partial}&lt;/div&gt;
+</code></pre>
+
+<p>Comment tags comment out part of the template.  They begin and end with 
+exclamation points. They can include newlines, spaces, and other tags.</p>
+
+<pre><code>&lt;p&gt;{!these words and this {tag} 
+  will not be rendered!}&lt;/p&gt;
+</code></pre>
+
+<p>Any tag is escaped from rendering by prepending a backslash:</p>
+
+<pre><code>\{variable}
+</code></pre>
+
+<p>See the test directory for server and browser usage examples.</p>
+
+<h2>
+<a name="forebears" class="anchor" href="#forebears"><span class="octicon octicon-link"></span></a>Forebears</h2>
+
+<p>Whiskers was influenced by these fine projects:</p>
+
+<ul>
+<li><a href="http://github.com/janl/mustache.js">http://github.com/janl/mustache.js</a></li>
+<li><a href="http://github.com/akdubya/dustjs">http://github.com/akdubya/dustjs</a></li>
+<li><a href="http://code.google.com/p/json-template/">http://code.google.com/p/json-template/</a></li>
+<li><a href="http://docs.djangoproject.com/en/dev/ref/templates/">http://docs.djangoproject.com/en/dev/ref/templates/</a></li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/decanat">decanat</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-51829400-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
