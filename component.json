@@ -1,0 +1,18 @@
+{
+  "name": "vibrissae",
+  "repo": "decanat/vibrissae",
+  "description": "A templating library with Mustache-like syntax for Decanat, based on Whiskers.js",
+  "version": "0.4.0",
+  "keywords": [
+    "template",
+    "templating",
+    "decanat"
+  ],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "main": "lib/vibrissae.js",
+  "scripts": [
+    "lib/vibrissae.js"
+  ]
+}
