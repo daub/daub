@@ -2,7 +2,7 @@
 
 A templating library with Mustache-like syntax based on [Whiskers.](https://github.com/gsf/whiskers.js).
 
-![Vibrissae](!http://decanat.github.io/vibrissae/images/path3031.png)
+![Vibrissae](http://decanat.github.io/vibrissae/images/path3031.png)
 
 About Whiskers
 --------------
