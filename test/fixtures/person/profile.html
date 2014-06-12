@@ -1,0 +1,25 @@
+<h2> {person.name} </h2>
+<p> {person.bio} </p>
+
+{if person.photos}
+<div>
+    <h3> Photos </h3>
+    <ul>
+        {for photo in person.photos}
+        <li> {>./thumbnail.html} </li>
+        {/for}
+    </ul>
+</div>
+{/if}
+
+
+<div>
+    <h3> Contacts </h3>
+
+    {for contact in person.contacts}
+    <dt> {contact.type} </dt>
+    <dd> {contact.value} </dd>
+    {else}
+    <em> No contacts provided </em>
+    {/for}
+</div>

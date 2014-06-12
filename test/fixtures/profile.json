@@ -1,0 +1,20 @@
+{
+    "people": [{
+        "name": "Rachel McAdams",
+        "photos": [{
+            "src": "http://ia.media-imdb.com/images/M/MV5BMTczMjMzMDA3M15BMl5BanBnXkFtZTcwMDk3MDk3OQ@@._V1_SY80_CR20,0,80,80_.jpg",
+            "href": "http://www.imdb.com/media/rm4279215360/nm1046097?ref_=nmmd_md_nxt",
+            "title": "Still of Rachel McAdams in Passion"
+        }, {
+            "src": "http://ia.media-imdb.com/images/M/MV5BMTU2ODkzMjg2Ml5BMl5BanBnXkFtZTcwOTg3MDk3OQ@@._V1_SY80_CR20,0,80,80_.jpg",
+            "href": "http://www.imdb.com/media/rm4027557120/ch0329428?ref_=nmmd_rg_md3",
+            "title": "Still of Noomi Rapace and Rachel McAdams in Passion"
+        }]
+    }, {
+        "name": "Anna Sedokova",
+        "contacts": [{
+            "type": "Twitter",
+            "value": "@ANNA_SEDOKOVA"
+        }]
+    }]
+}

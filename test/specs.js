@@ -5,7 +5,8 @@ var equal   = assert.equal,
 var vibrissae = require('../index.js');
 
 var render  = vibrissae.render,
-    compile = vibrissae.compile;
+    compile = vibrissae.compile,
+    express = vibrissae.__express;
 
 describe('Core', function(){
     describe('Compile', function(){
@@ -401,5 +402,42 @@ describe('Partials (basic)', function(){
         expected = 'book: Bob, author: Liz, pet: Errol, author: Jan';
 
         equal(rendered, expected);
+    });
+});
+
+
+// ----------------------
+
+
+
+describe('Express', function(){
+    var path = __dirname + '/fixtures/',
+        data = require(path + 'profile.json');
+
+    it('should have Express compatible interface', function(){
+        ok(express);
+        equal(typeof express, 'function');
+        equal(express.length, 3);
+    });
+
+    it('should resolve nested partials over multiple directories', function(done){
+        var logs = [];
+
+        express(path + 'index.html', data, add);
+        express(path + 'full.html', data, add);
+
+        function add(err, html){
+            assert.ok(!err);
+            assert.ok(html);
+
+            var zip = html.replace(/\s+/g, '');
+
+            if (logs.push(zip) === 2) check();
+        }
+
+        function check(){
+            assert.equal(logs[0], logs[1]);
+            done();
+        }
     });
 });
