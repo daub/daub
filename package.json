@@ -1,7 +1,7 @@
 {
   "name": "decanat-engine",
   "description": "Templating engine with Mustache-like syntax, based on Whiskers.js",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": "Mushex Antaranian",
   "engines": {
     "node": ">=0.10.0"
