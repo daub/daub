@@ -2,18 +2,19 @@ var fs      = require('fs'),
     path    = require('path');
 
 var resolve = path.resolve,
-    dirname = path.dirname;
+    dirname = path.dirname,
+    extname = path.extname;
 
-var vibrissae = require('./lib/vibrissae.js');
+var engine = require('./lib/engine.js');
 
 var cache = {},
     readCache = {};
 
+module.exports = engine;
 
-module.exports = vibrissae;
-
+module.exports.renderFile =
 module.exports.__express = function(path, options, fn) {
-    path = resolve(__dirname, path);
+    path = lookup(__dirname, path);
 
     if (typeof options === 'function')
         fn = options, options = {};
@@ -30,40 +31,46 @@ module.exports.__express = function(path, options, fn) {
 function fetch(path, options, fn) {
     var repart = /(?:{>([\w_.\-\/]+)})/g;
 
-    read(path, options, function (err, template) {
+    read(path, options, function (err, markup) {
         if (err) return fn(err);
 
-        var partials = template.match(repart);
+        var partials = markup.match(repart);
 
-        if (!partials) return fn(null, template);
+        if (!partials) return fn(null, markup);
 
         var pending = partials.length;
 
         partials.forEach(function(partial){
-            var resolved = resolve(dirname(path), partial.slice(2, -1));
+            var resolved = lookup(dirname(path), partial.slice(2, -1));
 
-            fetch(resolved, options, function(err, tpl){
-                template = template.replace(partial, tpl);
-                --pending || fn(null, template);
-            });
+            if (resolved == null)
+                return append();
+
+            fetch(resolved, options, append);
+
+            function append(err, tpl) {
+                if (err || !tpl) tpl = '';
+                markup = markup.replace(partial, tpl);
+                --pending || fn(null, markup);
+            }
         });
     });
 }
 
 
 function read(path, options, fn) {
-    var template = readCache[path];
+    var markup = readCache[path];
 
-    if (options.cache && template)
-        return fn(null, template);
+    if (options.cache && markup)
+        return fn(null, markup);
 
-    fs.readFile(path, 'utf8', function(err, template){
+    fs.readFile(path, 'utf8', function(err, markup){
         if (err) return fn(err);
 
         if (options.cache)
-            readCache[path] = template;
+            readCache[path] = markup;
 
-        fn(null, template);
+        fn(null, markup);
     });
 }
 
@@ -74,14 +81,27 @@ function compile(path, options, fn) {
     // cached
     if (options.cache && compiled) return fn(null, compiled);
     // read with partials
-    fetch(path, options, function(err, template){
+    fetch(path, options, function(err, markup){
         if (err) return fn(err);
 
-        var compiled = vibrissae.compile(template);
+        var compiled = engine.compile(markup);
 
         if (options.cache)
             cache[path] = compiled;
 
         fn(null, compiled);
     });
+}
+
+
+function lookup(path, partial) {
+    var resolved = resolve(path, partial);
+
+    if (!fs.existsSync(resolved)) {
+        if (extname(resolved) !== '.html')
+            return lookup(path, partial +'.html');
+        return null;
+    }
+
+    return resolved;
 }
