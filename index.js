@@ -1,3 +1,7 @@
+/**
+ * Load dependencies.
+ */
+
 var fs      = require('fs'),
     path    = require('path');
 
@@ -5,12 +9,35 @@ var resolve = path.resolve,
     dirname = path.dirname,
     extname = path.extname;
 
+/**
+ * Load `engine`.
+ */
+
 var engine = require('./lib/engine.js');
+
+/**
+ * Setup cache, initially empty.
+ */
 
 var cache = {},
     readCache = {};
 
+
+/**
+ * Expose `engine` itself;
+ */
+
 module.exports = engine;
+
+/**
+ * Expose `renderFile` method,
+ * aliased for Express.
+ *
+ * @param {String} path
+ * @param {Object} options [optional]
+ * @param {Function} fn [optional]
+ * @api public
+ */
 
 module.exports.renderFile =
 module.exports.__express = function(path, options, fn) {
@@ -27,6 +54,14 @@ module.exports.__express = function(path, options, fn) {
     });
 };
 
+/**
+ * Compile file at given path to templating function expression,
+ * optionally serving from `cache` if already compiled before.
+ * @param  {String} path
+ * @param  {Object} options
+ * @param  {Function} fn
+ * @api private
+ */
 
 function compile(path, options, fn) {
 
@@ -46,6 +81,14 @@ function compile(path, options, fn) {
     });
 }
 
+/**
+ * Inline partials in given template.
+ *
+ * @param  {String} path
+ * @param  {Object} options
+ * @param  {Function} fn
+ * @api private
+ */
 
 function fetch(path, options, fn) {
     var repart = /(?:{>([\w_.\-\/]+)})/g;
@@ -76,6 +119,15 @@ function fetch(path, options, fn) {
     });
 }
 
+/**
+ * Read file at given path,
+ * or serve cached version.
+ *
+ * @param  {String} path
+ * @param  {Object} options
+ * @param  {Function} fn
+ * @api private
+ */
 
 function read(path, options, fn) {
     var markup = readCache[path];
@@ -93,7 +145,15 @@ function read(path, options, fn) {
     });
 }
 
-
+/**
+ * Lookup for file at provided path to exist,
+ * tries with appended '.html', if it doesn't exist already.
+ *
+ * @param  {String} path
+ * @param  {String} partial
+ * @return {String}
+ * @api private
+ */
 
 function lookup(path, partial) {
     var resolved = resolve(path, partial);
