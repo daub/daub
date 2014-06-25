@@ -2,11 +2,11 @@ var assert  = require('assert');
 var equal   = assert.equal,
     ok      = assert.ok;
 
-var vibrissae = require('../index.js');
+var engine  = require('../index.js');
 
-var render  = vibrissae.render,
-    compile = vibrissae.compile,
-    express = vibrissae.__express;
+var render  = engine,
+    compile = engine.compile,
+    express = engine.__express;
 
 describe('Core', function(){
     describe('Compile', function(){

@@ -28,6 +28,25 @@ module.exports.__express = function(path, options, fn) {
 };
 
 
+function compile(path, options, fn) {
+
+    var compiled = cache[path];
+    // cached
+    if (options.cache && compiled) return fn(null, compiled);
+    // read with partials
+    fetch(path, options, function(err, markup){
+        if (err) return fn(err);
+
+        var compiled = engine.compile(markup);
+
+        if (options.cache)
+            cache[path] = compiled;
+
+        fn(null, compiled);
+    });
+}
+
+
 function fetch(path, options, fn) {
     var repart = /(?:{>([\w_.\-\/]+)})/g;
 
@@ -74,24 +93,6 @@ function read(path, options, fn) {
     });
 }
 
-
-function compile(path, options, fn) {
-
-    var compiled = cache[path];
-    // cached
-    if (options.cache && compiled) return fn(null, compiled);
-    // read with partials
-    fetch(path, options, function(err, markup){
-        if (err) return fn(err);
-
-        var compiled = engine.compile(markup);
-
-        if (options.cache)
-            cache[path] = compiled;
-
-        fn(null, compiled);
-    });
-}
 
 
 function lookup(path, partial) {
