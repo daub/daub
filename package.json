@@ -1,19 +1,19 @@
 {
-  "name": "decanat-vibrissae",
-  "description": "A templating library with Mustache-like syntax for Decanat, based on Whiskers.js",
+  "name": "decanat-engine",
+  "description": "Templating engine with Mustache-like syntax, based on Whiskers.js",
   "version": "0.4.0",
   "author": "Mushex Antaranian",
   "engines": {
     "node": ">=0.10.0"
   },
-  "main": "lib/vibrissae",
+  "main": "index.js",
+  "browser": "lib/engine.js",
   "repository": {
     "type": "git",
-    "url": "http://github.com/decanat/vibrissae.git"
+    "url": "http://github.com/decanat/engine.git"
   },
   "scripts": {
-    "test": "make test",
-    "prepublish": "make"
+    "test": "make test"
   },
   "devDependencies": {
     "component": "^1.0.0-rc5",
