@@ -1,8 +1,12 @@
-var assert  = require('assert');
-var equal   = assert.equal,
-    ok      = assert.ok;
+var fs      = require('fs'),
+    assert  = require('assert');
 
 var engine  = require('../index.js');
+
+var read    = fs.readFileSync;
+
+var equal   = assert.equal,
+    ok      = assert.ok;
 
 var render  = engine,
     compile = engine.compile,
@@ -421,22 +425,37 @@ describe('Express', function(){
     });
 
     it('should resolve nested partials over multiple directories', function(done){
-        var logs = [];
+        var output = read(path + 'full.html', 'utf8');
 
-        express(path + 'index.html', data, add);
-        express(path + 'full.html', data, add);
+        // remove indentation
+        output = output.replace(/(\n\s+)/g, '\n');
 
-        function add(err, html){
-            assert.ok(!err);
-            assert.ok(html);
+        express(path + 'index.html', data, check);
 
-            var zip = html.replace(/\s+/g, '');
-
-            if (logs.push(zip) === 2) check();
+            // html = html.replace(/\s+/g, ' ');
+        function check(err, html){
+            // remove indentation and multi-breaks
+            html = html
+                .replace(/(\n\s+)/g, '\n')
+                .replace(/(\n+)/g, '\n');
+            equal(html, output);
+            done();
         }
+    });
 
-        function check(){
-            assert.equal(logs[0], logs[1]);
+    it('should minify output in production', function(done){
+        var output = read(path + 'min.html', 'utf8');
+
+        // remove trailing break
+        output = output.slice(0, -1);
+
+        process.env.NODE_ENV = 'production';
+
+        express(path + 'index.html', data, check);
+
+        function check(err, html){
+            process.env.NODE_ENV = 'development';
+            equal(html, output);
             done();
         }
     });

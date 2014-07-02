@@ -5,15 +5,33 @@
 var fs      = require('fs'),
     path    = require('path');
 
-var resolve = path.resolve,
-    dirname = path.dirname,
-    extname = path.extname;
+var htmlmin = require('html-minifier');
 
 /**
  * Load `engine`.
  */
 
 var engine = require('./lib/engine.js');
+
+/**
+ * Shortcuts and shims.
+ */
+
+var resolve = path.resolve,
+    dirname = path.dirname,
+    extname = path.extname;
+
+/**
+ * Options for minification.
+ */
+
+var minOpts = {
+        collapseWhitespace: true,
+        conservativeCollapse: true,
+        removeComments: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true
+    };
 
 /**
  * Setup cache, initially empty.
@@ -28,6 +46,7 @@ var cache = {},
  */
 
 module.exports = engine;
+
 
 /**
  * Expose `renderFile` method,
@@ -71,6 +90,10 @@ function compile(path, options, fn) {
     // read with partials
     fetch(path, options, function(err, markup){
         if (err) return fn(err);
+
+        // minify on demand
+        if (options.htmlmin !== false && process.env.NODE_ENV == 'production')
+            markup = htmlmin.minify(markup, minOpts);
 
         var compiled = engine.compile(markup);
 

@@ -1,47 +1,38 @@
 <html>
     <head>
-        <title>{locals.title}</title>
+        <title></title>
     </head>
     <body>
-
         <h1> Good People </h1>
-
-        {for person in people}
         <article>
-
-            <h2> {person.name} </h2>
-            <p> {person.bio} </p>
-
-            {if person.photos}
+            <h2> Rachel McAdams </h2>
+            <p>  </p>
             <div>
                 <h3> Photos </h3>
                 <ul>
-                    {for photo in person.photos}
-                    <li> <img src="{photo.src}" title="{photo.title}" />
-                    <a href="{photo.link|#}"> {photo.title} </a>
+                    <li> <img src="http://ia.media-imdb.com/images/M/MV5BMTczMjMzMDA3M15BMl5BanBnXkFtZTcwMDk3MDk3OQ@@._V1_SY80_CR20,0,80,80_.jpg" title="Still of Rachel McAdams in Passion" />
+                    <a href="#"> Still of Rachel McAdams in Passion </a>
                      </li>
-                    {/for}
+                    <li> <img src="http://ia.media-imdb.com/images/M/MV5BMTU2ODkzMjg2Ml5BMl5BanBnXkFtZTcwOTg3MDk3OQ@@._V1_SY80_CR20,0,80,80_.jpg" title="Still of Noomi Rapace and Rachel McAdams in Passion" />
+                    <a href="#"> Still of Noomi Rapace and Rachel McAdams in Passion </a>
+                     </li>
                 </ul>
             </div>
-            {/if}
-
             <div>
                 <h3> Contacts </h3>
-
-                {for contact in person.contacts}
-                <dt> {contact.type} </dt>
-                <dd> {contact.value} </dd>
-                {else}
                 <em> No contacts provided </em>
-                {/for}
             </div>
-
         </article>
-        {/for}
-
+        <article>
+            <h2> Anna Sedokova </h2>
+            <p>  </p>
+            <div>
+                <h3> Contacts </h3>
+                <dt> Twitter </dt>
+                <dd> @ANNA_SEDOKOVA </dd>
+            </div>
+        </article>
         <p>
-            {!hey!}
         </p>
-
     </body>
 </html>

@@ -19,5 +19,8 @@
     "component": "^1.0.0-rc5",
     "mocha": "^1.20.1",
     "jshint": "^2.5.1"
+  },
+  "dependencies": {
+    "html-minifier": "^0.6.3"
   }
 }
