@@ -2,13 +2,23 @@
 
 A templating engine with Mustache-like syntax based on [Whiskers](https://github.com/gsf/whiskers.js).
 
+## Installation
+
+Using [component](https://github.com/component/component):
+
+    $ component install decanat/engine
+
+Using [npm](http://npmjs.org/) for server-side use or for [browserify](http://browserify.org/):
+
+    $ npm install decanat-engine
+
 ## Example
 
 Templates are rendered as follows, where "template" is a string and "context"
 is an object:
 
 ```js
-var engine = require('engine');
+var engine = require('decanat-engine');
 
 var markup = engine(template, context);
 ```
@@ -16,23 +26,23 @@ var markup = engine(template, context);
 A template might look something like this:
 
 ```html
-    <article>
-      <header>
-        {>header}
-      </header>
-      {if tags}
-        <ul id="tags">
-          {for tag in tags}
-          <li>{tag}</li>
-          {/for}
-        </ul>
-      {else}
-        <p>No tags!</p>
-      {/if}
-      <div>{content}</div>
-      {!<p>this paragraph is 
-        commented out</p>!}
-    </article>
+<article>
+  <header>
+    {>header}
+  </header>
+  {if tags}
+    <ul id="tags">
+      {for tag in tags}
+      <li>{tag}</li>
+      {/for}
+    </ul>
+  {else}
+    <p>No tags!</p>
+  {/if}
+  <div>{content}</div>
+  {!<p>this paragraph is 
+    commented out</p>!}
+</article>
 ```
 
 With the following context:
@@ -52,7 +62,7 @@ With the following context:
 
 It would be rendered as this:
 
-```
+```html
 <article>
   <header>
     <h1>My life</h1>
