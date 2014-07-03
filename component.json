@@ -2,7 +2,7 @@
   "name": "engine",
   "repo": "decanat/engine",
   "description": "Templating engine with Mustache-like syntax, based on Whiskers.js",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "keywords": [
     "template",
     "templating",
