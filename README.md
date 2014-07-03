@@ -1,48 +1,8 @@
-# Engine [![Build Status](https://travis-ci.org/decanat/vibrissae.svg)](https://travis-ci.org/decanat/engine)
+# Engine [![Build Status](https://travis-ci.org/decanat/engine.svg?branch=master)](https://travis-ci.org/decanat/engine)
 
 A templating engine with Mustache-like syntax based on [Whiskers.](https://github.com/gsf/whiskers.js).
 
-![Vibrissae](http://decanat.github.io/vibrissae/images/path3031.png)
-
-About Whiskers
---------------
-
-Whiskers is focused on template readability. By limiting template logic, 
-careful preparation of the context is encouraged, and the processing and 
-formatting of data is kept separate from the design of the display.
-
-At around 100 lines, Whiskers.js may be the smallest mustachioed templating 
-system. It also compiles and caches for quick execution. Take a look at the 
-well-documented [code][]!
-
-[code]: https://github.com/gsf/whiskers.js/blob/master/lib/whiskers.js
-
-
-Installation
-------------
-
-For the browser, drop the minified version at `dist/whiskers.min.js` in your
-scripts directory (or source it directly from GitHub at 
-<http://gsf.github.io/whiskers.js/whiskers.min.js>).
-
-For node, `npm install whiskers`.
-
-For use in [Express][], see [examples/express][exex].
-
-[express]: http://expressjs.com/
-[exex]: https://github.com/gsf/whiskers.js/tree/master/examples/express
-
-
-Tests
------
-
-For the browser, visit `test/browser/index.html`.
-
-For node, `npm test`.
-
-
-Example
--------
+## Example
 
 Templates are rendered as follows, where "template" is a string and "context"
 is an object:
