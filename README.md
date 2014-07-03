@@ -7,10 +7,15 @@ A templating engine with Mustache-like syntax based on [Whiskers.](https://githu
 Templates are rendered as follows, where "template" is a string and "context"
 is an object:
 
-    var rendered = whiskers.render(template, context);
+```js
+var engine = require('engine');
+
+var markup = engine(template, context);
+```
 
 A template might look something like this:
 
+```html
     <article>
       <header>
         {>header}
@@ -28,104 +33,45 @@ A template might look something like this:
       {!<p>this paragraph is 
         commented out</p>!}
     </article>
+```
 
 With the following context:
 
-    {
-      header: '<h1>{title}</h1>\n<p id="by">{author}</p>',
-      title: 'My life',
-      author: 'Bars Thorman',
-      tags: [
-        'real',
-        'vivid'
-      ],
-      content: 'I grew up into a fine willow.'
-    }
+```js
+{
+  header: '<h1>{title}</h1>\n<p id="by">{author}</p>',
+  title: 'My life',
+  author: 'Bars Thorman',
+  tags: [
+    'real',
+    'vivid'
+  ],
+  content: 'I grew up into a fine willow.'
+}
+```
 
 It would be rendered as this:
 
-    <article>
-      <header>
-        <h1>My life</h1>
-        <p id="by">Bars Thorman</p>
-      </header>
-      <ul id="tags">
-        <li>real</li>
-        <li>vivid</li>
-      </ul>
-      <div>I grew up into a fine willow.</div>
-    </article>
-
-
-Usage
------
-
-Whiskers keeps templates readable by limiting tags to variables, statements 
-("for", "if", and "else"), partials, and comments.
-
-Variable tags retrieve data from the context.  They may use dot notation, and 
-hyphens are allowed:
-
-    {object.a-variable}
-
-A "for" tag loops over variables in an array:
-
-    {for variable in array}
-      <p>{variable}</p>
-    {/for}
-
-An "if" tag only displays a section of the template for a truthy variable, or
-the inverse:
-
-    {if variable}
-      <p>{variable}</p>
-    {/if}
-    {if not variable}
-      <p>No variable!</p>
-    {/if}
-
-As you can see, "for" and "if" sections are closed by a corresponding tag with
-a leading slash. The previous example could also be shortened:
-
-    {if variable}
-      <p>{variable}</p>
-    {else}
-      <p>No variable!</p>
-    {/if}
-
-The "else" tag can also be used with "for" to display something when the array
-is empty:
-
-    {for variable in array}
-      <p>{variable}</p>
-    {else}
-      <p>Nothing in the array!</p>
-    {/for}
-
-A partial tag begins with a greater-than sign.  It renders any template
-assigned to that variable with the current context:
-
-    <div>{>partial}</div>
-
-Comment tags comment out part of the template.  They begin and end with 
-exclamation points. They can include newlines, spaces, and other tags.
-
-    <p>{!these words and this {tag} 
-      will not be rendered!}</p>
-
-Any tag is escaped from rendering by prepending a backslash:
-
-    \{variable}
-
-See the test directory for server and browser usage examples.
-
+```
+<article>
+  <header>
+    <h1>My life</h1>
+    <p id="by">Bars Thorman</p>
+  </header>
+  <ul id="tags">
+    <li>real</li>
+    <li>vivid</li>
+  </ul>
+  <div>I grew up into a fine willow.</div>
+</article>
+```
 
 Forebears
 ---------
 
-Whiskers was influenced by these fine projects:
-
-* <http://github.com/janl/mustache.js>
-* <http://github.com/akdubya/dustjs>
+* <https://github.com/gsf/whiskers.js>
+* <https://github.com/visionmedia/ejs>
+* <https://github.com/janl/mustache.js>
+* <https://github.com/akdubya/dustjs>
 * <http://code.google.com/p/json-template/>
 * <http://docs.djangoproject.com/en/dev/ref/templates/>
