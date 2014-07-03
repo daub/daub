@@ -1,6 +1,6 @@
 # Engine [![Build Status](https://travis-ci.org/decanat/engine.svg?branch=master)](https://travis-ci.org/decanat/engine)
 
-A templating engine with Mustache-like syntax based on [Whiskers.](https://github.com/gsf/whiskers.js).
+A templating engine with Mustache-like syntax based on [Whiskers](https://github.com/gsf/whiskers.js).
 
 ## Example
 
@@ -66,8 +66,14 @@ It would be rendered as this:
 </article>
 ```
 
-Forebears
----------
+## Test
+
+Run unit tests:
+
+    $ make test
+
+
+## Forebears
 
 * <https://github.com/gsf/whiskers.js>
 * <https://github.com/visionmedia/ejs>
@@ -75,3 +81,7 @@ Forebears
 * <https://github.com/akdubya/dustjs>
 * <http://code.google.com/p/json-template/>
 * <http://docs.djangoproject.com/en/dev/ref/templates/>
+
+## License
+
+The MIT License.
