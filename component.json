@@ -2,7 +2,7 @@
   "name": "engine",
   "repo": "decanat/engine",
   "description": "Templating engine with Mustache-like syntax, based on Whiskers.js",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "keywords": [
     "template",
     "templating",
@@ -13,6 +13,7 @@
   "license": "MIT",
   "main": "lib/engine.js",
   "scripts": [
-    "lib/engine.js"
+    "lib/engine.js",
+    "lib/transform.js"
   ]
 }

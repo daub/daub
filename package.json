@@ -1,7 +1,7 @@
 {
   "name": "decanat-engine",
   "description": "Templating engine with Mustache-like syntax, based on Whiskers.js",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "author": "Mushex Antaranian",
   "engines": {
     "node": ">=0.10.0"
@@ -18,7 +18,14 @@
   "devDependencies": {
     "component": "^1.0.0-rc5",
     "mocha": "^1.20.1",
-    "jshint": "^2.5.1"
+    "jshint": "^2.5.1",
+    "benchmark": "^1.0.0",
+    "plates": "^0.4.9",
+    "mustache": "^0.8.2",
+    "handlebars": "^2.0.0-alpha.4",
+    "underscore": "^1.6.0",
+    "lodash": "^2.4.1",
+    "whiskers": "^0.3.3"
   },
   "dependencies": {
     "html-minifier": "^0.6.3"
