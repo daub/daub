@@ -8,7 +8,7 @@ var read    = fs.readFileSync;
 var equal   = assert.equal,
     ok      = assert.ok;
 
-var render  = engine,
+var render  = engine.render,
     compile = engine.compile,
     express = engine.__express;
 
@@ -335,16 +335,16 @@ describe('Blocks', function(){
 
             equal(render('{for x in biz}{x}{if foo}{/for}{foo}{/if}', context), 'botbarbitbar');
             equal(warnings.shift(), "extra {/for} ignored");
-            equal(warnings.shift(), "extra {for} closed at end of template");
+            equal(warnings.shift(), "extra {for} closed");
 
             equal(render('{if foo}{for x in biz}{x}{/if}{foo}{/for}', context), 'botbarbitbar');
             equal(warnings.shift(), "extra {/if} ignored");
-            equal(warnings.shift(), "extra {if} closed at end of template");
+            equal(warnings.shift(), "extra {if} closed");
 
             equal(render('{if foo}{for x in biz}{x}{else}blah{/if}', context), 'botbit');
             equal(warnings.shift(), "extra {/if} ignored");
-            equal(warnings.shift(), "extra {for} closed at end of template");
-            equal(warnings.shift(), "extra {if} closed at end of template");
+            equal(warnings.shift(), "extra {for} closed");
+            equal(warnings.shift(), "extra {if} closed");
 
             equal(render('{else}{for x in biz}{x}{else}blah{else}bleh{/for}', context), 'botbit');
             equal(warnings.shift(), "extra {else} ignored");

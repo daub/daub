@@ -20,7 +20,7 @@ is an object:
 ```js
 var engine = require('decanat-engine');
 
-var markup = engine(template, context);
+var markup = engine.render(template, context);
 ```
 
 A template might look something like this:
@@ -82,6 +82,9 @@ Run unit tests:
 
     $ make test
 
+## Best practices
+
+Use [Whiskers.js](https://github.com/gsf/whiskers.js) instead, it's ~3x faster (could get even faster because of internal caching).
 
 ## Forebears
 

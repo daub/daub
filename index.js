@@ -42,7 +42,7 @@ var cache = {},
 
 
 /**
- * Expose `engine` itself;
+ * Expose `engine` itself.
  */
 
 module.exports = engine;
@@ -55,6 +55,7 @@ module.exports = engine;
  * @param {String} path
  * @param {Object} options [optional]
  * @param {Function} fn [optional]
+ * @async
  * @api public
  */
 
@@ -73,12 +74,15 @@ module.exports.__express = function(path, options, fn) {
     });
 };
 
+
 /**
  * Compile file at given path to templating function expression,
  * optionally serving from `cache` if already compiled before.
- * @param  {String} path
- * @param  {Object} options
- * @param  {Function} fn
+ *
+ * @param {String} path
+ * @param {Object} options
+ * @param {Function} fn
+ * @async
  * @api private
  */
 
@@ -95,7 +99,7 @@ function compile(path, options, fn) {
         if (options.htmlmin !== false && process.env.NODE_ENV == 'production')
             markup = htmlmin.minify(markup, minOpts);
 
-        var compiled = engine.compile(markup);
+        var compiled = engine.compile(markup, path);
 
         if (options.cache)
             cache[path] = compiled;
@@ -104,12 +108,14 @@ function compile(path, options, fn) {
     });
 }
 
+
 /**
  * Inline partials in given template.
  *
- * @param  {String} path
- * @param  {Object} options
- * @param  {Function} fn
+ * @param {String} path
+ * @param {Object} options
+ * @param {Function} fn
+ * @async
  * @api private
  */
 
@@ -134,7 +140,13 @@ function fetch(path, options, fn) {
             fetch(resolved, options, append);
 
             function append(err, tpl) {
-                if (err || !tpl) tpl = '';
+                if (err || !tpl) {
+                    report('Can not parse template.', {
+                        file: path
+                    });
+
+                    tpl = '';
+                }
                 markup = markup.replace(partial, tpl);
                 --pending || fn(null, markup);
             }
@@ -142,13 +154,15 @@ function fetch(path, options, fn) {
     });
 }
 
+
 /**
  * Read file at given path,
  * or serve cached version.
  *
- * @param  {String} path
- * @param  {Object} options
- * @param  {Function} fn
+ * @param {String} path
+ * @param {Object} options
+ * @param {Function} fn
+ * @async
  * @api private
  */
 
@@ -167,6 +181,7 @@ function read(path, options, fn) {
         fn(null, markup);
     });
 }
+
 
 /**
  * Lookup for file at provided path to exist,
