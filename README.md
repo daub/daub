@@ -20,7 +20,10 @@ is an object:
 ```js
 var engine = require('decanat-engine');
 
-var markup = engine.render(template, context);
+var template = 'Hello, {place}!',
+    context  = { place: 'Region' };
+
+engine.render(template, context); // Hello, Region!
 ```
 
 A template might look something like this:

@@ -10,7 +10,10 @@ test: lint
 lint: ./lib/*.js
 	@./node_modules/.bin/jshint $^ \
 
+perf: ./benchmark/perf.js
+	@node $^
+
 clean:
-	rm -fr build components
+	rm -fr build components node_modules
 
 .PHONY: build, clean, test, lint

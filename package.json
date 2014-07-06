@@ -1,7 +1,7 @@
 {
   "name": "decanat-engine",
   "description": "Templating engine with Whiskers-like syntax.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": "Mushex Antaranian",
   "engines": {
     "node": ">=0.10.0"
@@ -20,19 +20,21 @@
     "mocha": "^1.20.1",
     "jshint": "^2.5.1",
     "benchmark": "^1.0.0",
-    "mustache": "^0.8.2",
-    "underscore": "^1.6.0"
+    "underscore": "^1.6.0",
+    "handlebars": "^2.0.0-alpha.4",
+    "whiskers": "^0.3.3",
+    "hogan.js": "^3.0.2",
+    "ejs": "^1.0.0"
   },
   "dependencies": {
     "html-minifier": "^0.6.3",
-    "decanat-engine-report": "^0.5.0",
-    "decanat-engine-case-variable": "^0.5.0",
-    "decanat-engine-case-escape": "^0.5.0",
-    "decanat-engine-case-for": "^0.5.0",
-    "decanat-engine-case-if": "^0.5.0",
-    "decanat-engine-case-partial": "^0.5.0",
+    "decanat-engine-case-partial": "^0.5.1",
+    "decanat-engine-case-escape": "^0.5.1",
+    "decanat-engine-reporter": "^0.5.2",
+    "decanat-engine-case-if": "^0.5.1",
     "decanat-engine-case-else": "^0.5.1",
-    "decanat-engine-case-close": "^0.5.0",
-    "decanat-engine-reporter": "^0.5.2"
+    "decanat-engine-case-variable": "^0.5.1",
+    "decanat-engine-case-for": "^0.5.1",
+    "decanat-engine-case-close": "^0.5.0"
   }
 }

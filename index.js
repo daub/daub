@@ -13,6 +13,8 @@ var htmlmin = require('html-minifier');
 
 var engine = require('./lib/engine.js');
 
+var report = require('decanat-engine-reporter');
+
 /**
  * Shortcuts and shims.
  */
@@ -123,13 +125,16 @@ function fetch(path, options, fn) {
     var repart = /(?:{>([\w_.\-\/]+)})/g;
 
     read(path, options, function (err, markup) {
-        if (err) return fn(err);
+        if (err)
+            return fail(err);
 
-        var partials = markup.match(repart);
+        var partials = markup.match(repart),
+            pending;
 
-        if (!partials) return fn(null, markup);
+        if (!partials)
+            return fn(null, markup);
 
-        var pending = partials.length;
+        pending = partials.length;
 
         partials.forEach(function(partial){
             var resolved = lookup(dirname(path), partial.slice(2, -1));
@@ -140,18 +145,23 @@ function fetch(path, options, fn) {
             fetch(resolved, options, append);
 
             function append(err, tpl) {
-                if (err || !tpl) {
-                    report('Can not parse template.', {
-                        file: path
-                    });
-
-                    tpl = '';
-                }
                 markup = markup.replace(partial, tpl);
                 --pending || fn(null, markup);
             }
         });
     });
+
+    function fail(err, markup) {
+        report('Can not parse template.', {
+            file: path
+        });
+
+        // fail silently in production
+        if (process.env.NODE_ENV == 'production')
+            err = null, markup = '';
+
+        return fn(err, markup);
+    }
 }
 
 
@@ -171,6 +181,9 @@ function read(path, options, fn) {
 
     if (options.cache && markup)
         return fn(null, markup);
+
+    if (!path)
+        return fn('Not found');
 
     fs.readFile(path, 'utf8', function(err, markup){
         if (err) return fn(err);

@@ -459,4 +459,25 @@ describe('Express', function(){
             done();
         }
     });
+
+    it('should warn on delusional files', function(done){
+        // stub `console.warn`
+        var temp = console.warn,
+            warnings = [];
+
+        console.warn = function(message) {
+            warnings.push(message);
+        };
+
+        express('./delusional', function(err, html){
+            ok(err)
+            ok(!html);
+
+            equal('Can not parse template.', warnings.pop());
+
+            // return to normal
+            console.warn = temp;
+            done();
+        });
+    });
 });
