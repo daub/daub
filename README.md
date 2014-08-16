@@ -1,4 +1,4 @@
-# Engine [![Build Status](https://travis-ci.org/decanat/engine.svg?branch=master)](https://travis-ci.org/decanat/engine)
+# Daub [![Build Status](https://travis-ci.org/decanat/engine.svg?branch=master)](https://travis-ci.org/daub/daub)
 
 A templating engine with Mustache-like syntax based on [Whiskers](https://github.com/gsf/whiskers.js).
 
@@ -6,11 +6,11 @@ A templating engine with Mustache-like syntax based on [Whiskers](https://github
 
 Using [component](https://github.com/component/component):
 
-    $ component install decanat/engine
+    $ component install daub/daub
 
 Using [npm](http://npmjs.org/) for server-side use or for [browserify](http://browserify.org/):
 
-    $ npm install decanat-engine
+    $ npm install daub
 
 ## Example
 
@@ -18,21 +18,18 @@ Templates are rendered as follows, where "template" is a string and "context"
 is an object:
 
 ```js
-var engine = require('decanat-engine');
+var daub = require('daub');
 
 var template = 'Hello, {place}!',
     context  = { place: 'Region' };
 
-engine.render(template, context); // Hello, Region!
+daub.render(template, context); // Hello, Region!
 ```
 
 A template might look something like this:
 
 ```html
 <article>
-  <header>
-    {>header}
-  </header>
   {if tags}
     <ul id="tags">
       {for tag in tags}
@@ -52,7 +49,6 @@ With the following context:
 
 ```js
 {
-  header: '<h1>{title}</h1>\n<p id="by">{author}</p>',
   title: 'My life',
   author: 'Bars Thorman',
   tags: [
@@ -67,10 +63,6 @@ It would be rendered as this:
 
 ```html
 <article>
-  <header>
-    <h1>My life</h1>
-    <p id="by">Bars Thorman</p>
-  </header>
   <ul id="tags">
     <li>real</li>
     <li>vivid</li>

@@ -1,16 +1,16 @@
 {
-  "name": "decanat-engine",
+  "name": "daub",
   "description": "Templating engine with Whiskers-like syntax.",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "author": "Mushex Antaranian",
   "engines": {
     "node": ">=0.10.0"
   },
   "main": "index.js",
-  "browser": "lib/engine.js",
+  "browser": "lib/daub.js",
   "repository": {
     "type": "git",
-    "url": "http://github.com/decanat/engine.git"
+    "url": "http://github.com/daub/daub.git"
   },
   "scripts": {
     "test": "make test"
@@ -28,12 +28,6 @@
   },
   "dependencies": {
     "html-minifier": "^0.6.3",
-    "decanat-engine-case-escape": "^0.5.1",
-    "decanat-engine-reporter": "^0.5.2",
-    "decanat-engine-case-if": "^0.5.1",
-    "decanat-engine-case-else": "^0.5.1",
-    "decanat-engine-case-variable": "^0.5.1",
-    "decanat-engine-case-for": "^0.5.1",
-    "decanat-engine-case-close": "^0.5.0"
+    "daub-reporter": "^1.0.0"
   }
 }

@@ -11,9 +11,9 @@ var htmlmin = require('html-minifier');
  * Load `engine`.
  */
 
-var engine = require('./lib/engine.js');
+var engine = require('./lib/daub.js');
 
-var report = require('decanat-engine-reporter');
+var report = require('daub-reporter');
 
 /**
  * Shortcuts and shims.
