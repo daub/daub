@@ -1,7 +1,7 @@
 {
   "name": "decanat-engine",
   "description": "Templating engine with Whiskers-like syntax.",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "author": "Mushex Antaranian",
   "engines": {
     "node": ">=0.10.0"
@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "html-minifier": "^0.6.3",
-    "decanat-engine-case-partial": "^0.5.1",
     "decanat-engine-case-escape": "^0.5.1",
     "decanat-engine-reporter": "^0.5.2",
     "decanat-engine-case-if": "^0.5.1",

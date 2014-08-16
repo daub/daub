@@ -2,7 +2,7 @@
   "name": "engine",
   "repo": "decanat/engine",
   "description": "Templating engine with Whiskers-like syntax",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "keywords": [
     "template",
     "templating",
@@ -14,7 +14,6 @@
     "decanat/engine-case-escape": "~0.5.1",
     "decanat/engine-case-for": "~0.5.1",
     "decanat/engine-case-if": "~0.5.1",
-    "decanat/engine-case-partial": "~0.5.1",
     "decanat/engine-case-else": "~0.5.1",
     "decanat/engine-case-close": "~0.5.0"
   },
