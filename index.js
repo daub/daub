@@ -2,8 +2,7 @@
  * Load dependencies.
  */
 
-var fs      = require('fs'),
-    path    = require('path');
+var fs      = require('fs');
 
 var htmlmin = require('html-minifier');
 
@@ -11,17 +10,11 @@ var htmlmin = require('html-minifier');
  * Load `engine`.
  */
 
-var engine = require('./lib/daub.js');
+var engine  = require('./lib/daub.js');
 
-var report = require('daub-reporter');
+var report  = require('daub-reporter');
 
-/**
- * Shortcuts and shims.
- */
-
-var resolve = path.resolve,
-    dirname = path.dirname,
-    extname = path.extname;
+var resolve = require('daub-resolve');
 
 /**
  * Options for minification.
@@ -121,10 +114,10 @@ function compile(path, options, fn) {
  * @api private
  */
 
-function fetch(path, options, fn) {
+function fetch(root, options, fn) {
     var repart = /(?:{>([\w_.\-\/]+)})/g;
 
-    read(path, options, function (err, markup) {
+    read(root, options, function (err, markup) {
         if (err)
             return fail(err);
 
@@ -137,15 +130,17 @@ function fetch(path, options, fn) {
         pending = partials.length;
 
         partials.forEach(function(partial){
-            var resolved = lookup(dirname(path), partial.slice(2, -1));
+            // '{>partial.html}' to 'partial.html'
+            var path     = partial.slice(2, -1),
+                resolved = resolve(root, path, options);
 
             if (resolved == null)
                 return append();
 
             fetch(resolved, options, append);
 
-            function append(err, tpl) {
-                markup = markup.replace(partial, tpl);
+            function append(err, template) {
+                markup = markup.replace(partial, template);
                 --pending || fn(null, markup);
             }
         });
@@ -153,7 +148,7 @@ function fetch(path, options, fn) {
 
     function fail(err, markup) {
         report('Can not parse template.', {
-            file: path
+            file: root
         });
 
         // fail silently in production
@@ -193,27 +188,4 @@ function read(path, options, fn) {
 
         fn(null, markup);
     });
-}
-
-
-/**
- * Lookup for file at provided path to exist,
- * tries with appended '.html', if it doesn't exist already.
- *
- * @param  {String} path
- * @param  {String} partial
- * @return {String}
- * @api private
- */
-
-function lookup(path, partial) {
-    var resolved = resolve(path, partial);
-
-    if (!fs.existsSync(resolved)) {
-        if (extname(resolved) !== '.html')
-            return lookup(path, partial +'.html');
-        return null;
-    }
-
-    return resolved;
 }
