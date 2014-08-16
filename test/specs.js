@@ -39,7 +39,6 @@ describe('Core', function(){
             equal(render(), '');
             equal(render('3'), '3');
             equal(render('{foo}'), '');
-            equal(render('{>bar}'), '');
             equal(render(function(){ return 'foo' }), 'foo');
         });
 
@@ -58,7 +57,6 @@ describe('Core', function(){
             equal(render(), '');
             equal(render('3'), '3');
             equal(render('{foo}'), '');
-            equal(render('{>bar}'), '');
             equal(render(3), '3');
             equal(render([1,2,3]), '1,2,3');
             equal(render({p:3}), '[object Object]');
@@ -78,7 +76,6 @@ describe('Core', function(){
         it('should leave tags escaped with leading \\ as is', function() {
             equal(render('\\{bob}'), '{bob}');
             equal(render('\\{bob.bloss}'), '{bob.bloss}');
-            equal(render('\\{>reindeer}'), '{>reindeer}');
             equal(render('\\{for anger in mgmt}'), '{for anger in mgmt}');
             equal(render('\\{/for}'), '{/for}');
             equal(render('\\{if then}'), '{if then}');
@@ -355,58 +352,6 @@ describe('Blocks', function(){
         });
     });
 
-});
-
-
-describe('Partials (basic)', function(){
-    it('should act like variable when no partial blocks provided', function(){
-        equal(compile('{>p}')(), '');
-        equal(render('{>p}'), '');
-        equal(render('{>p}', {}), '');
-        equal(render('{>p.a}'), '');
-        equal(render('{>p.a}', {}), '');
-        equal(render('{>p}', {p:3}), '3');
-        equal(render('{>p}', {p:[]}), '');
-
-        equal(render('{>p.a}', {p:{a:'foo'}}), 'foo');
-        equal(render('{>p.a.b}', {p:{a:{b:'foo'}}}), 'foo');
-    });
-
-    it('should accept function as partial', function(){
-        equal(render('{>p}', { p: pt }), 'foo');
-
-        function pt () { return 'foo'; }
-    });
-
-    it('should evaluate partials in blocks', function(){
-        var template, partials, context,
-            rendered, expected;
-
-        template = 'book: {title}{for author in authors}{>partials.comma} {>partials.author}{/for}';
-
-        context = {
-            title: 'Bob',
-            authors: [{
-                name: 'Liz',
-                pets: [{name: 'Errol'}]
-            }, {
-                name: 'Jan'
-            }]
-        };
-
-        partials = {
-            author: 'author: {author.name}{for pet in author.pets}{>partials.comma} {>partials.pet}{/for}',
-            pet: 'pet: {pet.name}',
-            comma: function(){ return ','; }
-        };
-
-        context.partials = partials;
-
-        rendered = render(template, context);
-        expected = 'book: Bob, author: Liz, pet: Errol, author: Jan';
-
-        equal(rendered, expected);
-    });
 });
 
 
