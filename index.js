@@ -7,12 +7,10 @@ var fs      = require('fs');
 var htmlmin = require('html-minifier');
 
 /**
- * Load `engine`.
+ * Load `daub`.
  */
 
-var engine  = require('./lib/daub.js');
-
-var report  = require('daub-reporter');
+var daub    = require('./lib/daub.js');
 
 var resolve = require('daub-resolve');
 
@@ -36,11 +34,13 @@ var cache = {},
     readCache = {};
 
 
+var production = process.env.NODE_ENV == 'production';
+
 /**
- * Expose `engine` itself.
+ * Expose `daub` itself.
  */
 
-module.exports = engine;
+module.exports = daub;
 
 
 /**
@@ -85,16 +85,17 @@ function compile(path, options, fn) {
 
     var compiled = cache[path];
     // cached
-    if (options.cache && compiled) return fn(null, compiled);
+    if (options.cache && compiled)
+        return fn(null, compiled);
     // read with partials
     fetch(path, options, function(err, markup){
         if (err) return fn(err);
 
         // minify on demand
-        if (options.htmlmin !== false && process.env.NODE_ENV == 'production')
+        if (options.compress || production)
             markup = htmlmin.minify(markup, minOpts);
 
-        var compiled = engine.compile(markup, path);
+        compiled = daub.compile(markup, path);
 
         if (options.cache)
             cache[path] = compiled;
@@ -122,12 +123,10 @@ function fetch(root, options, fn) {
             return fail(err);
 
         var partials = markup.match(repart),
-            pending;
+            pending  = partials && partials.length;
 
-        if (!partials)
+        if (!pending)
             return fn(null, markup);
-
-        pending = partials.length;
 
         partials.forEach(function(partial){
             // '{>partial.html}' to 'partial.html'
@@ -147,13 +146,9 @@ function fetch(root, options, fn) {
     });
 
     function fail(err, markup) {
-        report('Can not parse template.', {
-            file: root
-        });
-
         // fail silently in production
         if (process.env.NODE_ENV == 'production')
-            err = null, markup = '';
+            return fn(null, '');
 
         return fn(err, markup);
     }
