@@ -2,7 +2,8 @@
  * Load dependencies.
  */
 
-var fs      = require('fs');
+var fs      = require('fs'),
+    path    = require('path');
 
 var htmlmin = require('html-minifier');
 
@@ -12,7 +13,7 @@ var htmlmin = require('html-minifier');
 
 var daub    = require('./lib/daub.js');
 
-var resolve = require('daub-resolve');
+var resolve = require('daub-resolver');
 
 /**
  * Options for minification.
@@ -55,16 +56,17 @@ module.exports = daub;
  */
 
 module.exports.renderFile =
-module.exports.__express = function(path, options, fn) {
-    path = lookup(__dirname, path);
+module.exports.__express = function(root, options, fn) {
+    // path = lookup(__dirname, path);
 
     if (typeof options === 'function')
         fn = options, options = {};
 
     fn || (fn = function(){});
 
-    compile(path, options, function(err, compiled){
+    compile(root, options, function(err, compiled){
         if (err) return fn(err);
+
         fn(null, compiled(options));
     });
 };
@@ -122,6 +124,11 @@ function fetch(root, options, fn) {
         if (err)
             return fail(err);
 
+        var settings = {
+                root: root,
+                component: options.component
+            };
+
         var partials = markup.match(repart),
             pending  = partials && partials.length;
 
@@ -129,14 +136,15 @@ function fetch(root, options, fn) {
             return fn(null, markup);
 
         partials.forEach(function(partial){
-            // '{>partial.html}' to 'partial.html'
-            var path     = partial.slice(2, -1),
-                resolved = resolve(root, path, options);
+            // '{>./partial.html}' to 'partial.html'
+            var target   = partial.slice(2, -1);
 
-            if (resolved == null)
-                return append();
+            resolve(target, settings, function(err, resolved){
+                if (err || resolved == null)
+                    return append();
 
-            fetch(resolved, options, append);
+                fetch(resolved, options, append);
+            });
 
             function append(err, template) {
                 markup = markup.replace(partial, template);

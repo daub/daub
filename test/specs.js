@@ -388,14 +388,13 @@ describe('Express', function(){
         }
     });
 
-    it('should minify output in production', function(done){
+    it('should minify output on demand', function(done){
         var output = read(path + 'min.html', 'utf8');
 
         // remove trailing break
         output = output.slice(0, -1);
 
-        process.env.NODE_ENV = 'production';
-
+        data.compress = true;
         express(path + 'index.html', data, check);
 
         function check(err, html){
@@ -410,18 +409,10 @@ describe('Express', function(){
         var temp = console.warn,
             warnings = [];
 
-        console.warn = function(message) {
-            warnings.push(message);
-        };
-
         express('./delusional', function(err, html){
             ok(err)
             ok(!html);
 
-            equal('Can not parse template.', warnings.pop());
-
-            // return to normal
-            console.warn = temp;
             done();
         });
     });
