@@ -71,6 +71,28 @@ It would be rendered as this:
 </article>
 ```
 
+## Partials
+
+Daub's partials are being loaded compile-time, like includes in [EJS](https://github.com/visionmedia/ejs), so are not available for front-end usage.
+
+You can specify partials using local files, using relative path to target template in statement:
+
+```html
+<body>
+  {>./common/header.html}
+</body>
+```
+
+Or you can use [npm](http://npmjs.org/) or [component](https://github.com/component/component) packages, in which case `index.html` file or the one specified in manifest as `template` will be loaded.
+
+```html
+<body>
+  {>daub/example-package}
+</body>
+```
+
+NOTE: By default **npm** is used to resolve packages. If you want to use **component**, set `{ component: true }` in `options` argument.
+
 ## Test
 
 Run unit tests:
