@@ -1,7 +1,7 @@
 REPORTER ?= dot
 
 build: test
-	@./node_modules/.bin/component build
+	@./node_modules/.bin/faiton build
 
 test: lint
 	@./node_modules/.bin/mocha \
