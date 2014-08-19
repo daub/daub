@@ -1,7 +1,7 @@
 {
   "name": "daub",
   "description": "Templating engine with Whiskers-like syntax.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Mushex Antaranian",
   "engines": {
     "node": ">=0.10.0"
@@ -29,6 +29,6 @@
   "dependencies": {
     "html-minifier": "^0.6.3",
     "daub-reporter": "^1.0.0",
-    "daub-resolver": "*"
+    "daub-resolver": "^1.1.1"
   }
 }

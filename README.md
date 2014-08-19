@@ -75,7 +75,7 @@ It would be rendered as this:
 
 Daub's partials are being loaded compile-time, like includes in [EJS](https://github.com/visionmedia/ejs), so are not available for front-end usage.
 
-You can specify partials using local files, using relative path to target template in statement:
+You can specify partials using local files, using relative path to target template in statement. If specified path is a directory, it'll resolve corresponding `index.html` if exists.
 
 ```html
 <body>
@@ -83,11 +83,11 @@ You can specify partials using local files, using relative path to target templa
 </body>
 ```
 
-Or you can use [npm](http://npmjs.org/) or [component](https://github.com/component/component) packages, in which case `index.html` file or the one specified in manifest as `template` will be loaded.
+Or you can use [npm](http://npmjs.org/) or [component](https://github.com/component/component) packages, in which case `template.html` file or the one specified in manifest as `template` will be loaded.
 
 ```html
 <body>
-  {>daub/example-package}
+  {>component/tip}
 </body>
 ```
 
