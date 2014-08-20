@@ -121,8 +121,7 @@ function fetch(root, options, fn) {
     var repart = /(?:{>([\w_.\-\/]+)})/g;
 
     read(root, options, function (err, markup) {
-        if (err)
-            return fail(err);
+        if (err) return fail(err);
 
         var settings = {
                 root: root,
@@ -137,7 +136,7 @@ function fetch(root, options, fn) {
 
         partials.forEach(function(partial){
             // '{>./partial.html}' to 'partial.html'
-            var target   = partial.slice(2, -1);
+            var target = partial.slice(2, -1);
 
             resolve(target, settings, function(err, resolved){
                 if (err || resolved == null)

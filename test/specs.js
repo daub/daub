@@ -1,16 +1,18 @@
 var fs      = require('fs'),
+    path    = require('path'),
     assert  = require('assert');
-
-var engine  = require('../index.js');
 
 var read    = fs.readFileSync;
 
 var equal   = assert.equal,
     ok      = assert.ok;
 
-var render  = engine.render,
-    compile = engine.compile,
-    express = engine.__express;
+var daub  = require('../index.js');
+
+var render     = daub.render,
+    compile    = daub.compile;
+
+var renderFile = daub.renderFile;
 
 describe('Core', function(){
     describe('Compile', function(){
@@ -359,23 +361,23 @@ describe('Blocks', function(){
 
 
 
-describe('Express', function(){
-    var path = __dirname + '/fixtures/',
-        data = require(path + 'profile.json');
+describe('Render files', function(){
+    var root = __dirname + '/fixtures/',
+        data = require(root + 'profile.json');
 
     it('should have Express compatible interface', function(){
-        ok(express);
-        equal(typeof express, 'function');
-        equal(express.length, 3);
+        ok(daub['__express']);
+        equal(typeof daub['__express'], 'function');
+        equal(daub['__express'].length, 3);
     });
 
     it('should resolve nested partials over multiple directories', function(done){
-        var output = read(path + 'full.html', 'utf8');
+        var output = read(root + 'full.html', 'utf8');
 
         // remove indentation
         output = output.replace(/(\n\s+)/g, '\n');
 
-        express(path + 'index.html', data, check);
+        renderFile(root + 'index.html', data, check);
 
             // html = html.replace(/\s+/g, ' ');
         function check(err, html){
@@ -389,13 +391,13 @@ describe('Express', function(){
     });
 
     it('should minify output on demand', function(done){
-        var output = read(path + 'min.html', 'utf8');
+        var output = read(root + 'min.html', 'utf8');
 
         // remove trailing break
         output = output.slice(0, -1);
 
         data.compress = true;
-        express(path + 'index.html', data, check);
+        renderFile(root + 'index.html', data, check);
 
         function check(err, html){
             process.env.NODE_ENV = 'development';
@@ -409,7 +411,7 @@ describe('Express', function(){
         var temp = console.warn,
             warnings = [];
 
-        express('./delusional', function(err, html){
+        renderFile('./delusional', function(err, html){
             ok(err)
             ok(!html);
 
