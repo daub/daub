@@ -13,7 +13,10 @@ var htmlmin = require('html-minifier');
 
 var daub    = require('./lib/daub.js');
 
+var read    = require('./lib/read.js');
+
 var resolve = require('daub-resolver');
+
 
 /**
  * Options for minification.
@@ -31,8 +34,7 @@ var minOpts = {
  * Setup cache, initially empty.
  */
 
-var cache = {},
-    readCache = {};
+var cache = {};
 
 
 var production = process.env.NODE_ENV == 'production';
@@ -43,6 +45,11 @@ var production = process.env.NODE_ENV == 'production';
 
 module.exports = daub;
 
+/**
+ * Expose low level `readFile` method.
+ */
+
+daub.readFile = read;
 
 /**
  * Expose `renderFile` method,
@@ -55,14 +62,14 @@ module.exports = daub;
  * @api public
  */
 
-module.exports.renderFile =
-module.exports.__express = function(root, options, fn) {
-    // path = lookup(__dirname, path);
+daub.renderFile =
+daub.__express = function(root, options, fn) {
+    if (typeof options == 'function')
+        fn = options,
+        options = {};
 
-    if (typeof options === 'function')
-        fn = options, options = {};
-
-    fn || (fn = function(){});
+    if (typeof fn !== 'function')
+        fn = function(){};
 
     compile(root, options, function(err, compiled){
         if (err) return fn(err);
@@ -87,7 +94,7 @@ function compile(path, options, fn) {
 
     var compiled = cache[path];
     // cached
-    if (options.cache && compiled)
+    if (options.cache != false && compiled)
         return fn(null, compiled);
     // read with partials
     fetch(path, options, function(err, markup){
@@ -118,27 +125,20 @@ function compile(path, options, fn) {
  */
 
 function fetch(root, options, fn) {
-    var repart = /(?:{>([\w_.\-\/]+)})/g;
+    read(root, options, function (err, file) {
+        if (err) return fn(err);
 
-    read(root, options, function (err, markup) {
-        if (err) return fail(err);
-
-        var settings = {
-                root: root,
-                component: options.component
-            };
-
-        var partials = markup.match(repart),
+        var partials = file.partials,
             pending  = partials && partials.length;
 
         if (!pending)
-            return fn(null, markup);
+            return fn(null, file.string);
 
         partials.forEach(function(partial){
             // '{>./partial.html}' to 'partial.html'
             var target = partial.slice(2, -1);
 
-            resolve(target, settings, function(err, resolved){
+            resolve(target, file.filename, function(err, resolved){
                 if (err || resolved == null)
                     return append();
 
@@ -146,48 +146,10 @@ function fetch(root, options, fn) {
             });
 
             function append(err, template) {
-                markup = markup.replace(partial, template);
-                --pending || fn(null, markup);
+                file.string = file.string.replace(partial, template);
+                --pending || fn(null, file.string);
             }
         });
     });
-
-    function fail(err, markup) {
-        // fail silently in production
-        if (process.env.NODE_ENV == 'production')
-            return fn(null, '');
-
-        return fn(err, markup);
-    }
 }
 
-
-/**
- * Read file at given path,
- * or serve cached version.
- *
- * @param {String} path
- * @param {Object} options
- * @param {Function} fn
- * @async
- * @api private
- */
-
-function read(path, options, fn) {
-    var markup = readCache[path];
-
-    if (options.cache && markup)
-        return fn(null, markup);
-
-    if (!path)
-        return fn('Not found');
-
-    fs.readFile(path, 'utf8', function(err, markup){
-        if (err) return fn(err);
-
-        if (options.cache)
-            readCache[path] = markup;
-
-        fn(null, markup);
-    });
-}
