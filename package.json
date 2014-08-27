@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "html-minifier": "^0.6.3",
-    "daub-reporter": "^1.0.0",
-    "daub-resolver": "^1.1.0"
+    "daub-reporter": "^1.0.0"
   }
 }

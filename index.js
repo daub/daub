@@ -13,9 +13,7 @@ var htmlmin = require('html-minifier');
 
 var daub    = require('./lib/daub.js');
 
-var read    = require('./lib/read.js');
-
-var resolve = require('daub-resolver');
+var read    = require('./lib/core/read.js');
 
 
 /**
@@ -69,7 +67,7 @@ daub.__express = function(root, options, fn) {
         options = {};
 
     if (typeof fn !== 'function')
-        fn = function(){};
+        return void 0;
 
     compile(root, options, function(err, compiled){
         if (err) return fn(err);
@@ -97,7 +95,8 @@ function compile(path, options, fn) {
     if (options.cache != false && compiled)
         return fn(null, compiled);
     // read with partials
-    fetch(path, options, function(err, markup){
+    read(path, options, function(err, markup){
+
         if (err) return fn(err);
 
         // minify on demand
@@ -112,44 +111,3 @@ function compile(path, options, fn) {
         fn(null, compiled);
     });
 }
-
-
-/**
- * Inline partials in given template.
- *
- * @param {String} path
- * @param {Object} options
- * @param {Function} fn
- * @async
- * @api private
- */
-
-function fetch(root, options, fn) {
-    read(root, options, function (err, file) {
-        if (err) return fn(err);
-
-        var partials = file.partials,
-            pending  = partials && partials.length;
-
-        if (!pending)
-            return fn(null, file.string);
-
-        partials.forEach(function(partial){
-            // '{>./partial.html}' to 'partial.html'
-            var target = partial.slice(2, -1);
-
-            resolve(target, file.filename, function(err, resolved){
-                if (err || resolved == null)
-                    return append();
-
-                fetch(resolved, options, append);
-            });
-
-            function append(err, template) {
-                file.string = file.string.replace(partial, template);
-                --pending || fn(null, file.string);
-            }
-        });
-    });
-}
-
